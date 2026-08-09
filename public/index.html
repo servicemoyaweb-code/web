@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Moya</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <img class="brand-logo" src="/logo.webp" alt="Logo de Service Moya" />
+        <div class="hero-copy">
+          <p class="eyebrow">Draco-Web</p>
+          <h1>Service Moya</h1>
+          <p>Sistema administrativo</p>
+        </div>
+        <div class="hero-side-profile">
+          <img class="hero-side-image" src="/new-client.webp" alt="" />
+          <p>Gerente</p>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Clientes</h2>
+          </div>
+
+          <form id="clienteForm" class="card-form" data-form="cliente">
+            <input type="hidden" name="clienteId" id="clienteId" />
+            <div class="field-grid">
+              <label>
+                Nombre
+                <input type="text" name="nombre" required placeholder="Ej: Sergio" />
+              </label>
+              <label>
+                Apellido
+                <input type="text" name="apellido" required placeholder="Ej: Pérez" />
+              </label>
+              <label>
+                DNI
+                <input type="text" name="dni" required placeholder="Ej: 12345678" />
+              </label>
+              <label>
+                Nº manual
+                <input type="number" name="numeroCliente" min="1" placeholder="Ej: 1001" />
+              </label>
+              <label>
+                Teléfono
+                <input type="text" name="telefono" placeholder="Ej: 1122334455" />
+              </label>
+              <label class="full-width">
+                Dirección
+                <input type="text" name="direccion" placeholder="Ej: Av. Siempre Viva 123" />
+              </label>
+            </div>
+            <div class="actions">
+              <button type="submit">Guardar cliente</button>
+              <button type="button" data-action="cancel-client-form" class="secondary">Cancelar</button>
+            </div>
+          </form>
+
+          <div id="feedback" class="feedback" aria-live="polite"></div>
+
+          <label class="search-field">
+            <span>Buscar cliente</span>
+            <input type="search" id="clienteSearch" placeholder="Nombre, apellido, DNI, número manual, teléfono o dirección" />
+          </label>
+
+          <div id="clientesList" class="clientes-list"></div>
+        </section>
+
+        <section class="panel detail-panel">
+          <div class="panel-header">
+            <h2>Detalle del cliente</h2>
+          </div>
+          <div id="detalleCliente" class="detalle-cliente"></div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      window.API_BASE_URL = window.API_BASE_URL || '';
+    </script>
+    <script src="/app.js"></script>
+  </body>
+</html>

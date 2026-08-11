@@ -41,17 +41,17 @@ app.get('/api/clientes/:id', async (req, res) => {
 
 app.post('/api/clientes', async (req, res) => {
   try {
-    const { nombre, apellido, dni, telefono, direccion, numero_cliente } = req.body;
+    const { nombre, apellido, telefono, direccion, numero_cliente } = req.body;
     const result = await db.run(
-      'INSERT INTO clientes (nombre, apellido, dni, telefono, direccion, numero_cliente) VALUES (?, ?, ?, ?, ?, ?)',
-      [nombre, apellido, dni, telefono, direccion, numero_cliente ?? null]
+      'INSERT INTO clientes (nombre, apellido, telefono, direccion, numero_cliente) VALUES (?, ?, ?, ?, ?)',
+      [nombre, apellido, telefono, direccion, numero_cliente ?? null]
     );
 
     const cliente = await db.get('SELECT * FROM clientes WHERE id = ?', [result.lastInsertRowid]);
     res.status(201).json({ message: 'Cliente creado', cliente });
   } catch (error) {
     if (error.code === 'SQLITE_CONSTRAINT_UNIQUE' || error.code === '23505') {
-      return res.status(400).json({ error: 'El DNI ya existe' });
+      return res.status(400).json({ error: 'El dato único ya existe' });
     }
     res.status(500).json({ error: 'No se pudo crear el cliente' });
   }
@@ -59,10 +59,10 @@ app.post('/api/clientes', async (req, res) => {
 
 app.put('/api/clientes/:id', async (req, res) => {
   try {
-    const { nombre, apellido, dni, telefono, direccion, numero_cliente } = req.body;
+    const { nombre, apellido, telefono, direccion, numero_cliente } = req.body;
     const result = await db.run(
-      'UPDATE clientes SET nombre = ?, apellido = ?, dni = ?, telefono = ?, direccion = ?, numero_cliente = ? WHERE id = ?',
-      [nombre, apellido, dni, telefono, direccion, numero_cliente ?? null, req.params.id]
+      'UPDATE clientes SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, numero_cliente = ? WHERE id = ?',
+      [nombre, apellido, telefono, direccion, numero_cliente ?? null, req.params.id]
     );
 
     if (result.changes === 0) {
@@ -73,7 +73,7 @@ app.put('/api/clientes/:id', async (req, res) => {
     res.json({ message: 'Cliente actualizado', cliente });
   } catch (error) {
     if (error.code === 'SQLITE_CONSTRAINT_UNIQUE' || error.code === '23505') {
-      return res.status(400).json({ error: 'El DNI ya existe' });
+      return res.status(400).json({ error: 'El dato único ya existe' });
     }
     res.status(500).json({ error: 'No se pudo actualizar el cliente' });
   }

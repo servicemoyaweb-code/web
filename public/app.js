@@ -59,7 +59,6 @@ function fillClientForm(cliente) {
   clienteIdInput.value = cliente.id;
   clienteForm.nombre.value = cliente.nombre;
   clienteForm.apellido.value = cliente.apellido;
-  clienteForm.dni.value = cliente.dni;
   clienteForm.numeroCliente.value = cliente.numero_cliente ?? '';
   clienteForm.telefono.value = cliente.telefono || '';
   clienteForm.direccion.value = cliente.direccion || '';
@@ -76,7 +75,6 @@ function getFilteredClientes() {
     const haystack = [
       cliente.nombre,
       cliente.apellido,
-      cliente.dni,
       cliente.numero_cliente != null ? String(cliente.numero_cliente) : '',
       cliente.telefono,
       cliente.direccion,
@@ -109,7 +107,6 @@ function renderClientes() {
         <article class="cliente-card ${isActive ? 'active' : ''}">
           <button type="button" class="cliente-main" data-action="select-client" data-id="${cliente.id}">
             <h3>${escapeHtml(cliente.nombre)} ${escapeHtml(cliente.apellido)}</h3>
-            <p><strong>DNI:</strong> ${escapeHtml(cliente.dni)}</p>
             <p><strong>Nº manual:</strong> ${escapeHtml(cliente.numero_cliente != null ? cliente.numero_cliente : 'Sin número')}</p>
             <p>${escapeHtml(cliente.telefono || 'Sin teléfono')} • ${escapeHtml(cliente.direccion || 'Sin dirección')}</p>
           </button>
@@ -135,7 +132,6 @@ function renderDetalleCliente() {
   detalleCliente.innerHTML = `
     <div class="detalle-header">
       <h3>${escapeHtml(cliente.nombre)} ${escapeHtml(cliente.apellido)}</h3>
-      <p><strong>DNI:</strong> ${escapeHtml(cliente.dni)}</p>
       <p><strong>Nº manual:</strong> ${escapeHtml(cliente.numero_cliente != null ? cliente.numero_cliente : 'Sin número')}</p>
       <p><strong>Teléfono:</strong> ${escapeHtml(cliente.telefono || 'Sin teléfono')}</p>
       <p><strong>Dirección:</strong> ${escapeHtml(cliente.direccion || 'Sin dirección')}</p>
@@ -292,17 +288,13 @@ async function handleSubmit(event) {
     const payload = {
       nombre: form.nombre.value.trim(),
       apellido: form.apellido.value.trim(),
-      dni: form.dni.value.trim(),
-      numero_cliente: numeroClienteValue ? Number(numeroClienteValue) : null,
-      telefono: form.telefono.value.trim(),
-      direccion: form.direccion.value.trim(),
-    };
+        numero_cliente: numeroClienteValue ? Number(numeroClienteValue) : null,
+        telefono: form.telefono.value.trim(),
+        direccion: form.direccion.value.trim(),
+      };
 
-    if (!payload.nombre || !payload.apellido || !payload.dni) {
-      setFeedback('Completá nombre, apellido y DNI', true);
-      return;
-    }
-
+      if (!payload.nombre || !payload.apellido) {
+        setFeedback('Completá nombre y apellido', true);
     const url = state.editingClientId ? `/api/clientes/${state.editingClientId}` : '/api/clientes';
     const method = state.editingClientId ? 'PUT' : 'POST';
 

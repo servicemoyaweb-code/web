@@ -91,7 +91,7 @@ async function initializeDb() {
         id SERIAL PRIMARY KEY,
         nombre TEXT NOT NULL,
         apellido TEXT NOT NULL,
-        dni TEXT NOT NULL UNIQUE,
+        dni TEXT UNIQUE,
         telefono TEXT,
         direccion TEXT,
         numero_cliente INTEGER,
@@ -119,6 +119,7 @@ async function initializeDb() {
 
     await exec('ALTER TABLE clientes ADD COLUMN IF NOT EXISTS numero_cliente INTEGER;');
     await exec('ALTER TABLE electrodomesticos ADD COLUMN IF NOT EXISTS modelo TEXT;');
+    await exec('ALTER TABLE clientes ALTER COLUMN dni DROP NOT NULL;');
     await exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_clientes_numero_cliente ON clientes(numero_cliente);');
     return;
   }
@@ -128,7 +129,7 @@ async function initializeDb() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nombre TEXT NOT NULL,
       apellido TEXT NOT NULL,
-      dni TEXT NOT NULL UNIQUE,
+      dni TEXT UNIQUE,
       telefono TEXT,
       direccion TEXT,
       numero_cliente INTEGER,

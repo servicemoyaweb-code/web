@@ -288,13 +288,16 @@ async function handleSubmit(event) {
     const payload = {
       nombre: form.nombre.value.trim(),
       apellido: form.apellido.value.trim(),
-        numero_cliente: numeroClienteValue ? Number(numeroClienteValue) : null,
-        telefono: form.telefono.value.trim(),
-        direccion: form.direccion.value.trim(),
-      };
+      numero_cliente: numeroClienteValue ? Number(numeroClienteValue) : null,
+      telefono: form.telefono.value.trim(),
+      direccion: form.direccion.value.trim(),
+    };
 
-      if (!payload.nombre || !payload.apellido) {
-        setFeedback('Completá nombre y apellido', true);
+    if (!payload.nombre || !payload.apellido) {
+      setFeedback('Completá nombre y apellido', true);
+      return;
+    }
+
     const url = state.editingClientId ? `/api/clientes/${state.editingClientId}` : '/api/clientes';
     const method = state.editingClientId ? 'PUT' : 'POST';
 
@@ -318,6 +321,7 @@ async function handleSubmit(event) {
     } catch (error) {
       setFeedback(error.message, true);
     }
+    return;
   }
 
   if (form.matches('#applianceForm')) {
